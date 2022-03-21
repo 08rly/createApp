@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ジャンル</th>
+            <th scope="col">タイトル</th>
+            <th scope="col">内容</th>
+            <th scope="col">期限</th>
+        </tr>
+    </thead>
+
+    {% for task in tasks.items %}
+    <tbody>
+        <tr>
+            <td> {{ task.genre }}</td>
+            <td><a href="{{ url_for('update_task', id=task.id) }}"> {{ task.title }} </a></td>
+            <td> {{ task.body }} </td>
+            <td> {{ task.date }} </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% for page in tasks.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2) %}
+            {% if page %}
+                {% if page != tasks.page %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('index_pages', page_num=page) }}">{{ page }}</a></li>
+                {% else %}
+                <li class="page-item active"><a class="page-link">{{ page }}</a></li>
+                {% endif %}
+            {% else %}
+            <span> ... </span>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+<style>
+    a.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+        color: initial;
+        text-decoration: initial;
+    }
+</style>
+
+<div id="calendar">
+</div>
+    <script>
+        let calendarEl = document.getElementById('calendar');
+
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'ja',
+            height: 'auto',
+            buttonText: {
+                prev: '<',
+                next: '>',
+                prevYear: '<<',
+                nextYear: '>>',
+                today: '今月',
+                month: '月',
+                week: '週',
+                day: '日',
+                list: 'リスト'
+            },
+            dayCellContent: function(e) {
+                e.dayNumberText = e.dayNumberText.replace('日', '');
+            },
+            events: [
+            {% for event in events %}
+            {
+                title: '{{ event[0] }}',
+                start: '{{ event[1] }}',
+            },
+            {% endfor %}
+            ]
+        });
+
+        calendar.render();
+    </script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block btn %}
+<a href="{{ url_for('index') }}"><button type="button" class="btn btn-danger rounded-pill">元に戻る</button></a>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form class="form-group" method="POST">
+            {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.genre.label(class="form-control-label") }}
+            {{ form.genre(class="form-control form-control-lg") }}
+        </div>
+        <div class="form-group">
+            {{ form.title.label(class="form-control-label") }}
+            {{ form.title(class="form-control form-control-lg") }}
+        </div>
+        <div class="form-group">
+            {{ form.body.label(class="form-control-label") }}
+            {{ form.body(class="form-control form-control-lg") }}
+        </div>
+        <div class="form-group">
+            {{ form.date.label(class="form-control-label") }}
+            {{ form.date(class="form-control form-control-lg", placeholder="0000/0/0") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+        
+        </form>
+    </div>
+{% endblock %}

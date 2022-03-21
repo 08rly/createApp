@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block btn %}
+<a href="{{ url_for('index') }}"><button type="button" class="btn btn-danger rounded-pill">元に戻る</button></a>
+<a href="{{ url_for('schedule_task') }}"><button type="button" class="btn btn-light">Schedules</button></a>
+{% endblock %}
+
+{% block content %}
+<br>
+<style>
+    a.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+        color: initial;
+        text-decoration: initial;
+    }
+</style>
+
+<div id="calendar">
+</div>
+    <script>
+        let calendarEl = document.getElementById('calendar');
+
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'ja',
+            height: 'auto',
+            buttonText: {
+                prev: '<',
+                next: '>',
+                prevYear: '<<',
+                nextYear: '>>',
+                today: '今月',
+                month: '月',
+                week: '週',
+                day: '日',
+                list: 'リスト'
+            },
+            dayCellContent: function(e) {
+                e.dayNumberText = e.dayNumberText.replace('日', '');
+            },
+            events: [
+            {% for event in schedules %}
+            {
+                title: '{{ event[0] }}',
+                start: '{{ event[1] }}',
+            },
+            {% endfor %}
+            ]
+        });
+
+        calendar.render();
+    </script>
+    
+{% endblock %}
